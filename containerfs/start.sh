@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
- 
+
 # These envvars should've been set by the Dockerfile
 # If they're not set then something went wrong during the build
 : "${STEAM_DIR:?'ERROR: STEAM_DIR IS NOT SET!'}"
 : "${STEAMCMD_DIR:?'ERROR: STEAMCMD_DIR IS NOT SET!'}"
 : "${CSGO_APP_ID:?'ERROR: CSGO_APP_ID IS NOT SET!'}"
 : "${CSGO_DIR:?'ERROR: CSGO_DIR IS NOT SET!'}"
- 
+
 export SERVER_HOSTNAME="${SERVER_HOSTNAME:-Counter-Strike: Global Offensive Dedicated Server}"
 export SERVER_PASSWORD="${SERVER_PASSWORD:-}"
 export RCON_PASSWORD="${RCON_PASSWORD:-changeme}"
@@ -36,7 +36,7 @@ export NOMASTER="${NOMASTER:-}"
 [[ -z ${CI+x} ]] && "$STEAMCMD_DIR/steamcmd.sh" +login anonymous +force_install_dir "$CSGO_DIR" +app_update "$CSGO_APP_ID" +quit
 
 # Create dynamic autoexec config
-if [ ! "$CSGO_DIR/csgo/cfg/autoexec.cfg" ]; then
+if [ ! -f "$CSGO_DIR/csgo/cfg/autoexec.cfg" ]; then
 cat << AUTOEXECCFG > "$CSGO_DIR/csgo/cfg/autoexec.cfg"
 log on
 hostname "$SERVER_HOSTNAME"
